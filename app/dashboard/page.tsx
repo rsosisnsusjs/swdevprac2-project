@@ -1,44 +1,45 @@
-'use client'
+"use client";
 
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/hooks/use-auth'
-import { useEffect } from 'react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Calendar, BookOpen, LogOut } from 'lucide-react'
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
+import { useEffect } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Calendar, BookOpen, LogOut } from "lucide-react";
+import Navbar from "@/components/Navbar";
 
 export default function DashboardPage() {
-  const router = useRouter()
-  const { user, isAuthenticated, isLoading, logout } = useAuth()
+  const router = useRouter();
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
 
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.push('/auth/login')
-    }
-  }, [isAuthenticated, isLoading, router])
+  // useEffect(() => {
+  //   if (!isLoading && !isAuthenticated) {
+  //     router.push("/auth/login");
+  //   }
+  // }, [isAuthenticated, isLoading, router]);
 
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-text-secondary">Loading...</p>
       </div>
-    )
+    );
   }
 
-  if (!isAuthenticated) {
-    return null
-  }
+  // if (!isAuthenticated) {
+  //   return null;
+  // }
 
   const handleLogout = async () => {
-    await logout()
-    router.push('/auth/login')
-  }
+    await logout();
+    router.push("/auth/login");
+  };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-surface border-b border-border">
+      {/* <div className="bg-surface border-b border-border">
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Welcome back, {user?.name}</h1>
@@ -54,7 +55,8 @@ export default function DashboardPage() {
             Logout
           </Button>
         </div>
-      </div>
+      </div> */}
+      <Navbar />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-12">
@@ -63,7 +65,9 @@ export default function DashboardPage() {
           <Card className="p-8 hover:shadow-lg transition-shadow">
             <div className="flex items-start justify-between mb-6">
               <div>
-                <h2 className="text-xl font-bold text-foreground">Browse Exhibitions</h2>
+                <h2 className="text-xl font-bold text-foreground">
+                  Browse Exhibitions
+                </h2>
                 <p className="text-text-secondary mt-2">
                   Discover and book booths at upcoming exhibitions
                 </p>
@@ -83,7 +87,9 @@ export default function DashboardPage() {
           <Card className="p-8 hover:shadow-lg transition-shadow">
             <div className="flex items-start justify-between mb-6">
               <div>
-                <h2 className="text-xl font-bold text-foreground">My Bookings</h2>
+                <h2 className="text-xl font-bold text-foreground">
+                  My Bookings
+                </h2>
                 <p className="text-text-secondary mt-2">
                   Manage your booth reservations and bookings
                 </p>
@@ -101,5 +107,5 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
