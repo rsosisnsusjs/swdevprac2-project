@@ -64,26 +64,51 @@ export default function DashboardPage() {
           </Card>
 
           {/* My Bookings Card */}
-          <Card className="p-8 hover:shadow-lg transition-shadow">
-            <div className="flex items-start justify-between mb-6">
-              <div>
-                <h2 className="text-xl font-bold text-foreground">
-                  My Bookings
-                </h2>
-                <p className="text-text-secondary mt-2">
-                  Manage your booth reservations and bookings
-                </p>
+          {user?.role === "member" && (
+            <Card className="p-8 hover:shadow-lg transition-shadow">
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-bold text-foreground">
+                    My Bookings
+                  </h2>
+                  <p className="text-text-secondary mt-2">
+                    Manage your booth reservations and bookings
+                  </p>
+                </div>
+                <div className="p-3 bg-accent-light rounded-lg">
+                  <BookOpen className="h-6 w-6 text-accent" />
+                </div>
               </div>
-              <div className="p-3 bg-accent-light rounded-lg">
-                <BookOpen className="h-6 w-6 text-accent" />
+              <Link href="/bookings">
+                <Button className="w-full bg-accent hover:bg-accent-hover">
+                  View Bookings
+                </Button>
+              </Link>
+            </Card>
+          )}
+          {/* Admin Panel Card */}
+          {user?.role === "admin" && (
+            <Card className="p-8 hover:shadow-lg transition-shadow">
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-bold text-foreground">
+                    Admin Panel
+                  </h2>
+                  <p className="text-text-secondary mt-2">
+                    Manage booth reservations and Exhibitions
+                  </p>
+                </div>
+                <div className="p-3 bg-accent-light rounded-lg">
+                  <BookOpen className="h-6 w-6 text-accent" />
+                </div>
               </div>
-            </div>
-            <Link href="/bookings">
-              <Button className="w-full bg-accent hover:bg-accent-hover">
-                View Bookings
-              </Button>
-            </Link>
-          </Card>
+              <Link href="/admin">
+                <Button className="w-full bg-accent hover:bg-accent-hover">
+                  View Admin Panel
+                </Button>
+              </Link>
+            </Card>
+          )}
         </div>
       </div>
     </div>
