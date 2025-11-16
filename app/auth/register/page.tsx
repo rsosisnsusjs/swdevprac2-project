@@ -61,15 +61,23 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md p-8">
-        <div className="mb-8 text-center">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-accent mb-4">
-            <span className="text-xl font-bold text-white">B</span>
+      <Card className="w-full max-w-md p-10 shadow-lg border border-border/40 rounded-2xl backdrop-blur-sm">
+
+        {/* Header */}
+        <div className="mb-10 text-center">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-accent shadow-md mb-4">
+            <span className="text-2xl font-bold text-white">B</span>
           </div>
-          <h1 className="text-2xl font-bold text-foreground">BookYourBooth</h1>
-          <p className="text-text-secondary mt-2">Create your account</p>
+
+          <h1 className="text-3xl font-bold text-foreground tracking-tight">
+            BookYourBooth
+          </h1>
+          <p className="text-sm text-text-secondary mt-2">
+            Create your account
+          </p>
         </div>
 
+        {/* Error */}
         {error && (
           <Alert variant="destructive" className="mb-6">
             <AlertCircle className="h-4 w-4" />
@@ -77,11 +85,10 @@ export default function RegisterPage() {
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
-              Full Name
-            </label>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Full Name</label>
             <Input
               type="text"
               name="name"
@@ -90,14 +97,12 @@ export default function RegisterPage() {
               placeholder="John Doe"
               required
               disabled={isLoading}
-              className="w-full"
+              className="rounded-xl"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
-              Email
-            </label>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Email</label>
             <Input
               type="email"
               name="email"
@@ -106,14 +111,12 @@ export default function RegisterPage() {
               placeholder="name@example.com"
               required
               disabled={isLoading}
-              className="w-full"
+              className="rounded-xl"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
-              Phone Number
-            </label>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Phone Number</label>
             <Input
               type="tel"
               name="tel"
@@ -122,14 +125,12 @@ export default function RegisterPage() {
               placeholder="+1 (555) 000-0000"
               required
               disabled={isLoading}
-              className="w-full"
+              className="rounded-xl"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
-              Password
-            </label>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Password</label>
             <Input
               type="password"
               name="password"
@@ -138,14 +139,12 @@ export default function RegisterPage() {
               placeholder="••••••••"
               required
               disabled={isLoading}
-              className="w-full"
+              className="rounded-xl"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
-              Confirm Password
-            </label>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Confirm Password</label>
             <Input
               type="password"
               name="confirmPassword"
@@ -154,27 +153,32 @@ export default function RegisterPage() {
               placeholder="••••••••"
               required
               disabled={isLoading}
-              className="w-full"
+              className="rounded-xl"
             />
           </div>
 
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-accent hover:bg-accent-hover"
+            className="w-full bg-accent hover:bg-accent-hover rounded-xl h-11 font-semibold"
           >
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isLoading ? 'Creating account...' : 'Create account'}
+            {isLoading ? "Creating account..." : "Create account"}
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-text-secondary">
-          Already have an account?{' '}
-          <Link href="/auth/login" className="text-accent hover:underline font-medium">
+        {/* Footer */}
+        <p className="mt-8 text-center text-text-secondary text-sm">
+          Already have an account?{" "}
+          <Link
+            href="/auth/login"
+            className="text-accent hover:underline font-medium"
+          >
             Sign in
           </Link>
         </p>
       </Card>
     </div>
   )
+
 }

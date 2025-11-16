@@ -13,6 +13,7 @@ import {
 import { LogOut, Menu } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Navbar() {
   const router = useRouter();
@@ -46,9 +47,13 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <Link href="/dashboard" className="flex items-center gap-2">
-                <span className="text-xl font-semibold text-foreground">
-                  AppName
-                </span>
+                <Image
+                  src="/logo2.png"
+                  alt="App Logo"
+                  width={200}
+                  height={67}
+                  className="object-contain"
+                />
               </Link>
             </div>
           </div>
