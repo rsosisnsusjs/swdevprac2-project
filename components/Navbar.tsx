@@ -44,15 +44,15 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center gap-4">
-            {/* App icon + name */}
             <div className="flex items-center gap-2">
-              <span className="text-xl font-semibold text-foreground">
-                AppName
-              </span>
+              <Link href="/dashboard" className="flex items-center gap-2">
+                <span className="text-xl font-semibold text-foreground">
+                  AppName
+                </span>
+              </Link>
             </div>
           </div>
 
-          {/* Right: auth controls */}
           <div className="flex items-center gap-3">
             {isLoading && (
               <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />
@@ -82,7 +82,6 @@ export default function Navbar() {
 
             {!isLoading && isAuthenticated && (
               <div className="flex items-center gap-2">
-                {/* Username — not clickable */}
                 <span className="font-medium text-sm text-foreground">
                   {userName}
                 </span>
@@ -101,7 +100,6 @@ export default function Navbar() {
                     </button>
                   </DropdownMenuTrigger>
 
-                  {/* key depends on role so it remounts when role changes */}
                   <DropdownMenuContent
                     key={user?.role ?? "anon"}
                     align="end"
