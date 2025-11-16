@@ -100,6 +100,18 @@ export default function Navbar() {
                     align="end"
                     className="min-w-40 p-1 bg-background border border-border shadow-md"
                   >
+                    {/* Admin Panel — ONLY for admin */}
+                    {user?.role === "admin" && (
+                      <DropdownMenuItem
+                        asChild
+                        className="flex items-center gap-2 cursor-pointer rounded-md px-3 py-2 bg-background font-semibold hover:bg-accent-light focus:bg-accent-light"
+                      >
+                        <Link href="/admin" className="flex items-center gap-2">
+                          Admin Panel
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
+
                     {/* My Booking */}
                     <DropdownMenuItem
                       asChild
