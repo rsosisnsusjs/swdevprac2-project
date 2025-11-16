@@ -33,13 +33,6 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center gap-4">
-            {/* Mobile menu icon */}
-            <div className="sm:hidden">
-              <button className="p-2" aria-label="Open menu">
-                <Menu className="h-5 w-5" />
-              </button>
-            </div>
-
             {/* App icon + name */}
             <div className="flex items-center gap-2">
               {/* <AppIcon className="h-6 w-6" />{" "} */}
