@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,16 +18,26 @@ export default function Navbar() {
   const router = useRouter();
   const { user, isAuthenticated, isLoading, logout } = useAuth();
 
+  const [open, setOpen] = useState(false);
+
+  const userName = useMemo(() => user?.name?.trim() ?? "", [user?.name]);
+  const initial = useMemo(
+    () => (userName ? userName.charAt(0).toUpperCase() : "U"),
+    [userName]
+  );
+
+  useEffect(() => {
+    console.log("NAVBAR: user role", user?.role, "isAuth", isAuthenticated);
+  }, [user?.role, isAuthenticated]);
+
   const handleLogout = async () => {
     try {
+      setOpen(false);
       await logout();
     } finally {
       router.push("/dashboard");
     }
   };
-
-  const userName = user?.name?.trim() ?? "";
-  const initial = userName ? userName.charAt(0).toUpperCase() : "U";
 
   return (
     <header className="bg-surface border-b border-border">
@@ -35,7 +46,6 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             {/* App icon + name */}
             <div className="flex items-center gap-2">
-              {/* <AppIcon className="h-6 w-6" />{" "} */}
               <span className="text-xl font-semibold text-foreground">
                 AppName
               </span>
@@ -47,6 +57,7 @@ export default function Navbar() {
             {isLoading && (
               <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />
             )}
+
             {!isLoading && !isAuthenticated && (
               <div className="flex items-center gap-3">
                 <Link href="/auth/login">
@@ -75,7 +86,8 @@ export default function Navbar() {
                 <span className="font-medium text-sm text-foreground">
                   {userName}
                 </span>
-                <DropdownMenu>
+
+                <DropdownMenu open={open} onOpenChange={setOpen}>
                   <DropdownMenuTrigger asChild>
                     <button
                       aria-label={`Open user menu for ${userName || "User"}`}
@@ -89,7 +101,9 @@ export default function Navbar() {
                     </button>
                   </DropdownMenuTrigger>
 
+                  {/* key depends on role so it remounts when role changes */}
                   <DropdownMenuContent
+                    key={user?.role ?? "anon"}
                     align="end"
                     className="min-w-40 p-1 bg-background border border-border shadow-md"
                   >
@@ -114,7 +128,6 @@ export default function Navbar() {
                         href="/bookings"
                         className="flex items-center gap-2"
                       >
-                        {/* <Notebook className="h-4 w-4" /> */}
                         My Booking
                       </Link>
                     </DropdownMenuItem>
