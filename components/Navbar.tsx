@@ -77,45 +77,54 @@ export default function Navbar() {
             )}
 
             {!isLoading && isAuthenticated && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    aria-label={`Open user menu for ${userName || "User"}`}
-                    className="flex items-center justify-center w-8 h-8 p-0 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <Avatar className="w-8 h-8">
-                      <AvatarFallback className="h-8 w-8 rounded-full border border-foreground/30 bg-background flex items-center justify-center text-sm">
-                        {initial}
-                      </AvatarFallback>
-                    </Avatar>
-                  </button>
-                </DropdownMenuTrigger>
+              <div className="flex items-center gap-2">
+                {/* Username — not clickable */}
+                <span className="font-medium text-sm text-foreground">
+                  {userName}
+                </span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      aria-label={`Open user menu for ${userName || "User"}`}
+                      className="flex items-center justify-center w-8 h-8 p-0 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      <Avatar className="w-8 h-8">
+                        <AvatarFallback className="h-8 w-8 rounded-full border border-foreground/30 bg-background flex items-center justify-center text-sm">
+                          {initial}
+                        </AvatarFallback>
+                      </Avatar>
+                    </button>
+                  </DropdownMenuTrigger>
 
-                <DropdownMenuContent
-                  align="end"
-                  className="min-w-40 p-1 bg-background border border-border shadow-md"
-                >
-                  {/* My Booking */}
-                  <DropdownMenuItem
-                    asChild
-                    className="flex items-center gap-2 cursor-pointer rounded-md px-3 py-2 bg-background font-semibold hover:bg-accent-light focus:bg-accent-light"
+                  <DropdownMenuContent
+                    align="end"
+                    className="min-w-40 p-1 bg-background border border-border shadow-md"
                   >
-                    <Link href="/bookings" className="flex items-center gap-2">
-                      {/* <Notebook className="h-4 w-4" /> */}
-                      My Booking
-                    </Link>
-                  </DropdownMenuItem>
+                    {/* My Booking */}
+                    <DropdownMenuItem
+                      asChild
+                      className="flex items-center gap-2 cursor-pointer rounded-md px-3 py-2 bg-background font-semibold hover:bg-accent-light focus:bg-accent-light"
+                    >
+                      <Link
+                        href="/bookings"
+                        className="flex items-center gap-2"
+                      >
+                        {/* <Notebook className="h-4 w-4" /> */}
+                        My Booking
+                      </Link>
+                    </DropdownMenuItem>
 
-                  {/* Logout */}
-                  <DropdownMenuItem
-                    onClick={handleLogout}
-                    className="flex items-center gap-2 cursor-pointer rounded-md px-3 py-2 bg-background font-semibold hover:bg-accent-light focus:bg-accent-light"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                    {/* Logout */}
+                    <DropdownMenuItem
+                      onClick={handleLogout}
+                      className="flex items-center gap-2 cursor-pointer rounded-md px-3 py-2 bg-background font-semibold hover:bg-accent-light focus:bg-accent-light"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             )}
           </div>
         </div>

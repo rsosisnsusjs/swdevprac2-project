@@ -38,26 +38,6 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      {/* <div className="bg-surface border-b border-border">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Welcome back, {user?.name}</h1>
-            <p className="text-text-secondary mt-1">Member since {new Date().getFullYear()}</p>
-          </div>
-          <Button
-            onClick={handleLogout}
-            variant="outline"
-            size="sm"
-            className="gap-2"
-          >
-            <LogOut className="h-4 w-4" />
-            Logout
-          </Button>
-        </div>
-      </div> */}
-      <Navbar />
-
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid md:grid-cols-2 gap-6">
