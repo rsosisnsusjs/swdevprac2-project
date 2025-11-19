@@ -143,14 +143,14 @@ export default function AdminBookingsPage() {
                   >
                     <td className="px-6 py-4 text-foreground">
                       <div>
-                        <p className="font-medium">{booking.user.name}</p>
+                        <p className="font-medium">{booking.user?.name}</p>
                         <p className="text-xs text-text-secondary">
-                          {booking.user.email}
+                          {booking.user?.email}
                         </p>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-text-secondary">
-                      {booking.exhibition.name}
+                      {booking.exhibition?.name}
                     </td>
                     <td className="px-6 py-4 text-text-secondary capitalize">
                       {booking.boothType}
