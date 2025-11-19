@@ -162,28 +162,31 @@ export default function AdminBookingsPage() {
                       {format(new Date(booking.createdAt), "MMM dd, yyyy")}
                     </td>
                     <td className="px-6 py-4">
-                      <Link href={`/bookings/${booking._id}/edit`}>
+                      <div className="flex items-center gap-2">
+                        <Link href={`/bookings/${booking._id}/edit`}>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="gap-2"
+                            disabled={deletingId === booking._id}
+                          >
+                            <Edit2 className="h-4 w-4" />
+                          </Button>
+                        </Link>
+
                         <Button
                           variant="outline"
                           size="sm"
-                          className="gap-2"
-                          disabled={deletingId === booking._id}
+                          className="gap-2 border border-red-500"
+                          onClick={() => handleDelete(booking._id)}
+                          disabled={deletingId !== null}
                         >
-                          <Edit2 className="h-4 w-4" />
+                          {deletingId === booking._id && (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          )}
+                          <Trash2 className="h-4 w-4 stroke-red-500" />
                         </Button>
-                      </Link>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        className="gap-2"
-                        onClick={() => handleDelete(booking._id)}
-                        disabled={deletingId !== null}
-                      >
-                        {deletingId === booking._id && (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        )}
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}

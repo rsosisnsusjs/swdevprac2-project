@@ -1,101 +1,105 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { useRouter, useParams } from 'next/navigation'
-import { useAuth } from '@/hooks/use-auth'
-import { apiCall } from '@/lib/api-client'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { AlertCircle, Loader2, ArrowLeft, Check } from 'lucide-react'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
-import Link from 'next/link'
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
+import { apiCall } from "@/lib/api-client";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { AlertCircle, Loader2, ArrowLeft, Check } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
 
 interface Booking {
-  _id: string
+  _id: string;
   exhibition: {
-    _id: string
-    name: string
-    venue: string
-    smallBoothQuota: number
-    bigBoothQuota: number
-  }
-  boothType: 'small' | 'big'
-  amount: number
+    _id: string;
+    name: string;
+    venue: string;
+    smallBoothQuota: number;
+    bigBoothQuota: number;
+  };
+  boothType: "small" | "big";
+  amount: number;
 }
 
 export default function EditBookingPage() {
-  const router = useRouter()
-  const params = useParams()
-  const { isAuthenticated, isLoading } = useAuth()
-  const [booking, setBooking] = useState<Booking | null>(null)
-  const [boothType, setBoothType] = useState<'small' | 'big'>('small')
-  const [amount, setAmount] = useState(1)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isLoading2, setIsLoading2] = useState(true)
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
+  const router = useRouter();
+  const params = useParams();
+  const { isAuthenticated, isLoading, user } = useAuth();
+  const [booking, setBooking] = useState<Booking | null>(null);
+  const [boothType, setBoothType] = useState<"small" | "big">("small");
+  const [amount, setAmount] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(true);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
-  const bookingId = params.id as string
+  const bookingId = params.id as string;
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push('/auth/login')
+      router.push("/auth/login");
     }
-  }, [isAuthenticated, isLoading, router])
+  }, [isAuthenticated, isLoading, router]);
 
   useEffect(() => {
     const fetchBooking = async () => {
       try {
-        const data = await apiCall(`/booking/${bookingId}`)
-        const bookingData = data.data
-        setBooking(bookingData)
-        setBoothType(bookingData.boothType)
-        setAmount(bookingData.amount)
+        const data = await apiCall(`/booking/${bookingId}`);
+        const bookingData = data.data;
+        setBooking(bookingData);
+        setBoothType(bookingData.boothType);
+        setAmount(bookingData.amount);
       } catch (err: any) {
-        setError(err.message || 'Failed to load booking')
+        setError(err.message || "Failed to load booking");
       } finally {
-        setIsLoading2(false)
+        setIsLoading2(false);
       }
-    }
+    };
 
     if (isAuthenticated && bookingId) {
-      fetchBooking()
+      fetchBooking();
     }
-  }, [isAuthenticated, bookingId])
+  }, [isAuthenticated, bookingId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setIsSubmitting(true)
+    e.preventDefault();
+    setError("");
+    setIsSubmitting(true);
 
     try {
       await apiCall(`/booking/${bookingId}`, {
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify({
           boothType,
           amount,
         }),
-      })
+      });
 
-      setSuccess(true)
+      setSuccess(true);
       setTimeout(() => {
-        router.push('/bookings')
-      }, 2000)
+        if (user?.role === "admin") {
+          router.push("/admin/bookings");
+        } else {
+          router.push("/bookings");
+        }
+      }, 2000);
     } catch (err: any) {
-      setError(err.message || 'Failed to update booking')
+      setError(err.message || "Failed to update booking");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   if (isLoading || isLoading2) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-accent" />
       </div>
-    )
+    );
   }
 
   if (error && !booking) {
@@ -114,10 +118,10 @@ export default function EditBookingPage() {
           </Alert>
         </div>
       </div>
-    )
+    );
   }
 
-  if (!booking) return null
+  if (!booking) return null;
 
   if (success) {
     return (
@@ -126,13 +130,15 @@ export default function EditBookingPage() {
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
             <Check className="h-6 w-6 text-green-600" />
           </div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">Booking Updated!</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-2">
+            Booking Updated!
+          </h2>
           <p className="text-text-secondary mb-6">
             Your booking has been successfully updated. Redirecting...
           </p>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
@@ -167,7 +173,10 @@ export default function EditBookingPage() {
               <Label className="text-base font-semibold text-foreground mb-4 block">
                 Booth Type
               </Label>
-              <RadioGroup value={boothType} onValueChange={(value: any) => setBoothType(value)}>
+              <RadioGroup
+                value={boothType}
+                onValueChange={(value: any) => setBoothType(value)}
+              >
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3 p-4 border border-border rounded-lg hover:bg-surface cursor-pointer">
                     <RadioGroupItem value="small" id="small" />
@@ -194,7 +203,10 @@ export default function EditBookingPage() {
 
             {/* Quantity Selection */}
             <div>
-              <Label htmlFor="amount" className="text-base font-semibold text-foreground mb-4 block">
+              <Label
+                htmlFor="amount"
+                className="text-base font-semibold text-foreground mb-4 block"
+              >
                 Number of Booths
               </Label>
               <div className="flex items-center gap-4">
@@ -209,7 +221,9 @@ export default function EditBookingPage() {
                 <input
                   type="number"
                   value={amount}
-                  onChange={(e) => setAmount(Math.max(1, parseInt(e.target.value) || 1))}
+                  onChange={(e) =>
+                    setAmount(Math.max(1, parseInt(e.target.value) || 1))
+                  }
                   min="1"
                   max="6"
                   className="w-20 text-center border border-border rounded-lg px-3 py-2 text-foreground"
@@ -234,7 +248,9 @@ export default function EditBookingPage() {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-text-secondary">Booth Type:</span>
-                  <span className="font-medium text-foreground capitalize">{boothType}</span>
+                  <span className="font-medium text-foreground capitalize">
+                    {boothType}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-text-secondary">Quantity:</span>
@@ -242,7 +258,9 @@ export default function EditBookingPage() {
                 </div>
                 <div className="border-t border-border pt-2 mt-2 flex justify-between">
                   <span className="text-foreground font-semibold">Total:</span>
-                  <span className="font-bold text-accent">{amount} booth(s)</span>
+                  <span className="font-bold text-accent">
+                    {amount} booth(s)
+                  </span>
                 </div>
               </div>
             </Card>
@@ -253,12 +271,14 @@ export default function EditBookingPage() {
               disabled={isSubmitting}
               className="w-full bg-accent hover:bg-accent-hover"
             >
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isSubmitting ? 'Updating...' : 'Update Booking'}
+              {isSubmitting && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              {isSubmitting ? "Updating..." : "Update Booking"}
             </Button>
           </form>
         </Card>
       </div>
     </div>
-  )
+  );
 }

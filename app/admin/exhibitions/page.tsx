@@ -1,78 +1,85 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/hooks/use-auth'
-import { apiCall } from '@/lib/api-client'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { AlertCircle, Loader2, Trash2, Edit2, Plus, ArrowLeft } from 'lucide-react'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { format } from 'date-fns'
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
+import { apiCall } from "@/lib/api-client";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import {
+  AlertCircle,
+  Loader2,
+  Trash2,
+  Edit2,
+  Plus,
+  ArrowLeft,
+} from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { format } from "date-fns";
 
 interface Exhibition {
-  _id: string
-  name: string
-  description: string
-  venue: string
-  startDate: string
-  durationDay: number
-  smallBoothQuota: number
-  bigBoothQuota: number
+  _id: string;
+  name: string;
+  description: string;
+  venue: string;
+  startDate: string;
+  durationDay: number;
+  smallBoothQuota: number;
+  bigBoothQuota: number;
 }
 
 export default function AdminExhibitionsPage() {
-  const router = useRouter()
-  const { user, isAuthenticated, isLoading } = useAuth()
-  const [exhibitions, setExhibitions] = useState<Exhibition[]>([])
-  const [isLoading2, setIsLoading2] = useState(true)
-  const [error, setError] = useState('')
-  const [deletingId, setDeletingId] = useState<string | null>(null)
+  const router = useRouter();
+  const { user, isAuthenticated, isLoading } = useAuth();
+  const [exhibitions, setExhibitions] = useState<Exhibition[]>([]);
+  const [isLoading2, setIsLoading2] = useState(true);
+  const [error, setError] = useState("");
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isLoading && (!isAuthenticated || user?.role !== 'admin')) {
-      router.push('/auth/login')
+    if (!isLoading && (!isAuthenticated || user?.role !== "admin")) {
+      router.push("/auth/login");
     }
-  }, [isAuthenticated, isLoading, router, user])
+  }, [isAuthenticated, isLoading, router, user]);
 
   useEffect(() => {
     const fetchExhibitions = async () => {
       try {
-        const data = await apiCall('/exhibitions')
-        setExhibitions(data.data || [])
+        const data = await apiCall("/exhibitions");
+        setExhibitions(data.data || []);
       } catch (err: any) {
-        setError(err.message || 'Failed to load exhibitions')
+        setError(err.message || "Failed to load exhibitions");
       } finally {
-        setIsLoading2(false)
+        setIsLoading2(false);
       }
-    }
+    };
 
-    if (isAuthenticated && user?.role === 'admin') {
-      fetchExhibitions()
+    if (isAuthenticated && user?.role === "admin") {
+      fetchExhibitions();
     }
-  }, [isAuthenticated, user])
+  }, [isAuthenticated, user]);
 
   const handleDelete = async (exhibitionId: string) => {
-    if (!confirm('Are you sure you want to delete this exhibition?')) return
+    if (!confirm("Are you sure you want to delete this exhibition?")) return;
 
-    setDeletingId(exhibitionId)
+    setDeletingId(exhibitionId);
     try {
-      await apiCall(`/exhibitions/${exhibitionId}`, { method: 'DELETE' })
-      setExhibitions((prev) => prev.filter((ex) => ex._id !== exhibitionId))
+      await apiCall(`/exhibitions/${exhibitionId}`, { method: "DELETE" });
+      setExhibitions((prev) => prev.filter((ex) => ex._id !== exhibitionId));
     } catch (err: any) {
-      alert(err.message || 'Failed to delete exhibition')
+      alert(err.message || "Failed to delete exhibition");
     } finally {
-      setDeletingId(null)
+      setDeletingId(null);
     }
-  }
+  };
 
   if (isLoading || isLoading2) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-accent" />
       </div>
-    )
+    );
   }
 
   return (
@@ -88,8 +95,12 @@ export default function AdminExhibitionsPage() {
           </Link>
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Manage Exhibitions</h1>
-              <p className="text-text-secondary mt-1">Create, edit, and delete exhibitions</p>
+              <h1 className="text-2xl font-bold text-foreground">
+                Manage Exhibitions
+              </h1>
+              <p className="text-text-secondary mt-1">
+                Create, edit, and delete exhibitions
+              </p>
             </div>
             <Link href="/admin/exhibitions/create">
               <Button className="bg-accent hover:bg-accent-hover gap-2">
@@ -144,18 +155,28 @@ export default function AdminExhibitionsPage() {
               </thead>
               <tbody>
                 {exhibitions.map((exhibition) => (
-                  <tr key={exhibition._id} className="border-b border-border hover:bg-surface">
-                    <td className="px-6 py-4 text-foreground font-medium">{exhibition.name}</td>
-                    <td className="px-6 py-4 text-text-secondary">{exhibition.venue}</td>
+                  <tr
+                    key={exhibition._id}
+                    className="border-b border-border hover:bg-surface"
+                  >
+                    <td className="px-6 py-4 text-foreground font-medium">
+                      {exhibition.name}
+                    </td>
                     <td className="px-6 py-4 text-text-secondary">
-                      {format(new Date(exhibition.startDate), 'MMM dd, yyyy')}
+                      {exhibition.venue}
+                    </td>
+                    <td className="px-6 py-4 text-text-secondary">
+                      {format(new Date(exhibition.startDate), "MMM dd, yyyy")}
                     </td>
                     <td className="px-6 py-4 text-text-secondary text-sm">
-                      S: {exhibition.smallBoothQuota}, B: {exhibition.bigBoothQuota}
+                      S: {exhibition.smallBoothQuota}, B:{" "}
+                      {exhibition.bigBoothQuota}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex gap-2">
-                        <Link href={`/admin/exhibitions/${exhibition._id}/edit`}>
+                        <Link
+                          href={`/admin/exhibitions/${exhibition._id}/edit`}
+                        >
                           <Button
                             variant="outline"
                             size="sm"
@@ -166,16 +187,16 @@ export default function AdminExhibitionsPage() {
                           </Button>
                         </Link>
                         <Button
-                          variant="destructive"
+                          variant="outline"
                           size="sm"
-                          className="gap-2"
+                          className="gap-2 border border-red-500"
                           onClick={() => handleDelete(exhibition._id)}
                           disabled={deletingId !== null}
                         >
                           {deletingId === exhibition._id && (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           )}
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4 stroke-red-500" />
                         </Button>
                       </div>
                     </td>
@@ -187,5 +208,5 @@ export default function AdminExhibitionsPage() {
         )}
       </div>
     </div>
-  )
+  );
 }

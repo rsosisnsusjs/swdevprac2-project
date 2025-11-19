@@ -121,6 +121,20 @@ export default function Navbar() {
                         </Link>
                       </DropdownMenuItem>
                     )}
+                    {/* My Booking */}
+                    {user?.role === "member" && (
+                      <DropdownMenuItem
+                        asChild
+                        className="flex items-center gap-2 cursor-pointer rounded-md px-3 py-2 bg-background font-semibold hover:bg-accent-light focus:bg-accent-light"
+                      >
+                        <Link
+                          href="/exhibitions"
+                          className="flex items-center gap-2"
+                        >
+                          Exhibitions
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
 
                     {/* My Booking */}
                     {user?.role === "member" && (
@@ -132,7 +146,7 @@ export default function Navbar() {
                           href="/bookings"
                           className="flex items-center gap-2"
                         >
-                          My Booking
+                          My Bookings
                         </Link>
                       </DropdownMenuItem>
                     )}
