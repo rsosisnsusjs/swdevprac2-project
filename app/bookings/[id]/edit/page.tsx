@@ -134,7 +134,7 @@ export default function EditBookingPage() {
             Booking Updated!
           </h2>
           <p className="text-text-secondary mb-6">
-            Your booking has been successfully updated. Redirecting...
+            The booking has been successfully updated. Redirecting...
           </p>
         </Card>
       </div>

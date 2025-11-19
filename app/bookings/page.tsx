@@ -27,7 +27,7 @@ interface Booking {
 
 export default function BookingsPage() {
   const router = useRouter();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isLoading2, setIsLoading2] = useState(true);
   const [error, setError] = useState("");
@@ -40,6 +40,10 @@ export default function BookingsPage() {
   }, [isAuthenticated, isLoading, router]);
 
   useEffect(() => {
+    if (user?.role === "admin") {
+      router.replace("/admin/bookings");
+      return;
+    }
     const fetchBookings = async () => {
       try {
         const data = await apiCall("/booking");
