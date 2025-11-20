@@ -65,10 +65,6 @@ export default function RegisterPage() {
 
         {/* Header */}
         <div className="mb-10 text-center">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-accent shadow-md mb-4">
-            <span className="text-2xl font-bold text-white">B</span>
-          </div>
-
           <h1 className="text-3xl font-bold text-foreground tracking-tight">
             BookYourBooth
           </h1>

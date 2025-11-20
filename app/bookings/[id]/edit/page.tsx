@@ -126,7 +126,7 @@ export default function EditBookingPage() {
   if (success) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <Card className="p-8 text-center max-w-md">
+        <Card className="p-8 text-center max-w-md flex flex-col items-center">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
             <Check className="h-6 w-6 text-green-600" />
           </div>
